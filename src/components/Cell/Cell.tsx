@@ -1,5 +1,6 @@
-import React, { useRef } from 'react'
+import React, { MouseEvent, useContext, useRef } from 'react'
 import { RoughNotation } from 'react-rough-notation'
+import { ThemeContext } from 'styled-components'
 import { CellState } from '../Grid/logic'
 import * as S from './styles'
 
@@ -11,23 +12,31 @@ const TypedRoughNotation = RoughNotation as any
 
 type Props = {
   cellState: CellState
-  setCell: () => void
+  setCell: any
   disabled: boolean
+  idx: number
+  styles: object
 }
 
-export const Cell = ({ cellState, setCell, disabled }: Props) => {
+export const Cell = ({ cellState, setCell, disabled, idx, styles }: Props) => {
+  const themeContext = useContext(ThemeContext)
+
   const type = cellState === 'x' ? 'crossed-off' : 'circle'
   const ix = lerp(Math.random(), 1, 3)
   const jx = lerp(Math.random(), 1, 9)
   const ref = useRef([ix, jx])
-  const [i, w] = ref.current
+  const [iterations, w] = ref.current
+
+  const x = idx % themeContext.gridSize
+  const y = Math.floor(idx / themeContext.gridSize)
+
   return (
-    <S.Wrapper onClick={disabled ? () => {} : setCell} disabled={disabled}>
+    <S.Wrapper style={styles} onClick={disabled ? () => {} : setCell} disabled={disabled}>
       <S.Marker>
         {cellState !== '_' && (
           <TypedRoughNotation
             animationDuration={400}
-            iterations={i}
+            iterations={iterations}
             strokeWidth={w}
             color={cellState === 'x' ? 'black' : 'red'}
             type={type}

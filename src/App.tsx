@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { Grid } from './components/Grid/Grid'
-import { useWindowSize } from './hooks/useWindowSize'
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -23,16 +22,14 @@ const GlobalStyle = createGlobalStyle`
   }
 
 `
-const gridGap = 0.5
+const gridGap = 3
 
 function App() {
-  const { width } = useWindowSize()
-
   const [gridSize, setGridSize] = useState(7)
   const theme = {
     gridSize,
     setGridSize,
-    cellWidth: 10,
+    cellWidth: 100,
     gridGap,
     gridGapHalf: gridGap / 2,
   }

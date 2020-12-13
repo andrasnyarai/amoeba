@@ -7,7 +7,7 @@ export const Container = styled.div<{ opacity: number }>`
 
 export const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: ${({ theme }) => `repeat(${theme.gridSize}, ${theme.cellWidth}vw)`};
-  grid-auto-rows: ${({ theme }) => theme.cellWidth}vw;
-  grid-gap: ${({ theme }) => theme.gridGap}vw;
+  grid-template-columns: ${({ theme }) => `repeat(${theme.gridSize}, ${theme.cellWidth}px)`};
+  grid-auto-rows: ${({ theme }) => theme.cellWidth}px;
+  grid-gap: ${({ theme }) => theme.gridGap}px;
 `

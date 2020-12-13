@@ -9,12 +9,10 @@ export type GameState = {
 }
 
 function rotate<T>(matrix: T[][]): T[][] {
-  // Copy the original matrix
   const out = []
   var origMatrix = matrix.slice()
   for (var i = 0; i < matrix.length; i++) {
-    // Map each row entry to its rotated value
-    var row = matrix[i].map(function (x, j) {
+    const row = matrix[i].map((x, j) => {
       var k = matrix.length - 1 - j
       return origMatrix[k][i]
     })
@@ -40,10 +38,6 @@ function getDiagonals<T>(m: T[][]): T[][] {
     o.push(d)
   }
   return o
-}
-
-export function getRandomItemFromArray<T>(array: T[]): T {
-  return array[Math.floor(Math.random() * array.length)]
 }
 
 export function findFreeCellIndexes(cellStates: CellState[]): number[] {
@@ -85,19 +79,7 @@ export function checkWinner(cellStates: CellState[], n: number) {
   const diagonalLMatrix: CellState[][] = getDiagonals(horizontalMatrix)
 
   // check diagonally R
-  const t = rotate(horizontalMatrix)
-  const diagonalRMatrix: CellState[][] = getDiagonals(t)
-
-  console.log(t === horizontalMatrix)
-
-  // console.log(diagonalRMatrix)
-  // for (let i = 0; i < n; i++) {
-  //   for (let j = 0; j < n; j++) {
-  //     if (i === j) {
-  //       console.log(i, j)
-  //     }
-  //   }
-  // }
+  const diagonalRMatrix: CellState[][] = getDiagonals(rotate(horizontalMatrix))
 
   const isSameTokens = new RegExp(`([xo])\\1{${winNumber - 1},}`)
 
