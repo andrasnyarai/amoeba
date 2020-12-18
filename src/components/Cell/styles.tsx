@@ -14,6 +14,7 @@ export const Wrapper = styled.div<WrapperProps>`
 export const Marker = styled.div`
   width: 50%;
   height: 50%;
+  pointer-events: none;
   div {
     height: 100%;
   }

@@ -56,15 +56,63 @@ export const Grid = () => {
       <S.Wrapper>
         {gameState.cellStates.map((cellState, i) => {
           const setCell = (index: number, e: any) => {
-            // e.preserveEvent()
             const x = e.nativeEvent.offsetX
             const y = e.nativeEvent.offsetY
 
             const padding = themeContext.cellWidth / 7
-            const isLeft = x < padding
-            const isRight = x + padding > themeContext.cellWidth
-            const isUp = y < padding
-            const isDown = y + padding > themeContext.cellWidth
+            let isLeft = x < padding
+            let isRight = x + padding > themeContext.cellWidth
+            let isUp = y < padding
+            let isDown = y + padding > themeContext.cellWidth
+
+            const isLeftUp = isLeft && isUp
+            const isLeftDown = isLeft && isDown
+            const isRightUp = isRight && isUp
+            const isRightDown = isRight && isDown
+
+            console.log(isLeftUp, isLeftDown, isRightUp, isRightDown)
+
+            // differentiate by trapezoid
+            if (isLeftUp) {
+              if (x < y) {
+                // ◣
+                isUp = false
+              } else {
+                // ◥
+                isLeft = false
+              }
+            }
+            if (isLeftDown) {
+              const localY = y - (themeContext.cellWidth - padding)
+              if (localY + x < padding) {
+                // ◤
+                isDown = false
+              } else {
+                // ◢
+                isLeft = false
+              }
+            }
+            if (isRightUp) {
+              const localX = x - (themeContext.cellWidth - padding)
+              if (localX + y < padding) {
+                // ◤
+                isRight = false
+              } else {
+                // ◢
+                isUp = false
+              }
+            }
+            if (isRightDown) {
+              const localX = x - (themeContext.cellWidth - padding)
+              const localY = y - (themeContext.cellWidth - padding)
+              if (localX < localY) {
+                // ◣
+                isRight = false
+              } else {
+                // ◥
+                isDown = false
+              }
+            }
 
             setState((state) => {
               return {
@@ -77,11 +125,27 @@ export const Grid = () => {
                       },
                     }
                   : {}),
-                ...(isRight && index < themeContext.gridSize * themeContext.gridSize
+                ...(isRight && (index + 1) % themeContext.gridSize !== 0
                   ? {
-                      [index - 1]: {
-                        ...state[index - 1],
-                        isRight: true,
+                      [index + 1]: {
+                        ...state[index + 1],
+                        isLeft: true,
+                      },
+                    }
+                  : {}),
+                ...(isUp && index > themeContext.gridSize
+                  ? {
+                      [index - themeContext.gridSize]: {
+                        ...state[index - themeContext.gridSize],
+                        isDown: true,
+                      },
+                    }
+                  : {}),
+                ...(isDown && index + themeContext.gridSize < themeContext.gridSize ** 2
+                  ? {
+                      [index + themeContext.gridSize]: {
+                        ...state[index + themeContext.gridSize],
+                        isUp: true,
                       },
                     }
                   : {}),
@@ -100,6 +164,7 @@ export const Grid = () => {
 
           const borderStyle = '5px solid green'
 
+          // use rough notation highlight instead of borders!
           return (
             <Cell
               styles={{
