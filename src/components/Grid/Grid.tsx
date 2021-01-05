@@ -1,4 +1,4 @@
-import React, { MouseEvent, useContext, useEffect, useReducer, useState } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { ThemeContext } from 'styled-components'
 import { Board } from '../Board/Board'
 import { Cell } from '../Cell/Cell'
