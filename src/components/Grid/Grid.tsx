@@ -162,7 +162,7 @@ export const Grid = () => {
             dispatch({ type: 'SET_CELL', index, moveBy: gameState.moveBy === 'computer' ? 'human' : 'computer' })
           }
 
-          const borderStyle = '5px solid green'
+          const borderStyle = '5px solid blue'
 
           // use rough notation highlight instead of borders!
           return (
